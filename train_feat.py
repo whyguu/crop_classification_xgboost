@@ -182,12 +182,13 @@ def post_process(prediction, class_idx, z_mask, out_path):
     # 4. make predicted map and label map have the same index
     # print('prediction', np.unique(np.ravel(prediction)))
 
-    ind_mask = []
+    # ind_mask = []
+    class_idx.reverse()
     for i, num in enumerate(class_idx):
-        ind_mask.append(prediction == i)
+        ind_mask = (prediction == len(class_idx)-i-1)
         # print(i, np.sum(ind_mask[-1]))
-    for i, num in enumerate(class_idx):
-        prediction[ind_mask[i]] = num
+        prediction[ind_mask] = num
+
     # print('prediction', np.unique(np.ravel(prediction)))
     prediction[z_mask.astype(np.bool)] = 0
     # print('prediction', np.unique(np.ravel(prediction)))
@@ -197,7 +198,7 @@ def post_process(prediction, class_idx, z_mask, out_path):
     write_img(filename=out_path, im_proj=im_projection, im_geotrans=im_geo_transformation, im_data=prediction)
     # print('post process done ! now store the image')
     # io.imsave(out_path, prediction)
-
+    class_idx.reverse()
     return prediction
 
 
@@ -403,9 +404,6 @@ if __name__ == '__main__':
 
     # cfmx = confusion_matrix(y_true=label.reshape(-1, 1), y_pred=prediction.reshape(-1, 1), labels=class_idx)
     pseudo_map(prediction, class_idx, os.path.dirname(flags.output)+'/pseudo.png')
-
-
-
 
 
 
