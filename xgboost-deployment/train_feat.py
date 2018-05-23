@@ -64,7 +64,7 @@ XGB_PARAMS = {
 
 WIN_SIZE = 5
 
-GPU_MEMORY = 7.5  # GB
+# GPU_MEMORY = 7.5  # GB
 
 
 def generate_feature_for_predict(img, bd_list, win_size=WIN_SIZE):
